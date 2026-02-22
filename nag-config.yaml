@@ -1,0 +1,12 @@
+defaults:
+  fuzzy_minutes: 5           # Jitter range when fuzzy=true (0 = strict)
+  strict_by_default: true    # true = reminders are strict unless user says "fuzzy"
+  nag_interval_minutes: 2    # Default re-remind interval
+  max_nag_attempts: 50       # Stop nagging after this many attempts
+  timezone: America/New_York # Default timezone (IANA format)
+
+scheduler:
+  tick_seconds: 30           # How often to check for due reminders
+
+parser:
+  model: claude-haiku-3      # Model for NL parsing (haiku = fast + cheap)

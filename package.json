@@ -1,0 +1,47 @@
+{
+  "name": "nag-bot",
+  "version": "0.1.0",
+  "description": "Fuzzy reminders engine — a Telegram bot that nags you until you do the thing.",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "node dist/index.js",
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.39.0",
+    "better-sqlite3": "^11.0.0",
+    "dotenv": "^16.4.0",
+    "nanoid": "^5.0.0",
+    "node-telegram-bot-api": "^0.66.0",
+    "pino": "^9.6.0",
+    "yaml": "^2.7.0"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.0",
+    "@types/node": "^22.0.0",
+    "@types/node-telegram-bot-api": "^0.64.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0",
+    "vitest": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=21.2.0"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/avanrossum/nag-bot.git"
+  },
+  "keywords": [
+    "reminders",
+    "telegram-bot",
+    "fuzzy-scheduling",
+    "nag",
+    "adhd",
+    "notifications"
+  ]
+}
