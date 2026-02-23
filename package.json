@@ -1,6 +1,6 @@
 {
   "name": "nag-bot",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Fuzzy reminders engine — a Telegram bot that nags you until you do the thing.",
   "type": "module",
   "main": "dist/index.js",

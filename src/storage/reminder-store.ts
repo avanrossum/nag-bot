@@ -79,14 +79,22 @@ export function markFired(id: string, nowIso: string): void {
 }
 
 export function confirm(id: string): void {
-    const reminder = db.prepare('SELECT schedule_type FROM reminders WHERE id = ?').get(id) as { schedule_type: string };
+    const reminder = db.prepare('SELECT * FROM reminders WHERE id = ?').get(id) as Reminder;
     if (!reminder) return;
 
     if (reminder.schedule_type === 'once' || reminder.schedule_type === 'random') {
         db.prepare("UPDATE reminders SET status = 'confirmed' WHERE id = ?").run(id);
     } else {
-        // recurring keeps status 'active' but resets nag_count
-        db.prepare('UPDATE reminders SET nag_count = 0 WHERE id = ?').run(id);
+        // recurring keeps status 'active' but recalculates next target
+        if (reminder.time_of_day && reminder.recurrence) {
+            const tz = getTimezone();
+            const baseTime = nextRecurrence(reminder.time_of_day, reminder.recurrence, tz);
+            const withJitter = applyJitter(baseTime, reminder.fuzzy_minutes);
+            updateNextFire(id, withJitter.toISOString());
+            // updateNextFire sets nag_count = 0 underneath
+        } else {
+            db.prepare('UPDATE reminders SET nag_count = 0 WHERE id = ?').run(id);
+        }
     }
 }
 

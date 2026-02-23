@@ -44,13 +44,15 @@ export class Scheduler {
                 await this.fireCallback(msg);
                 markFired(r.id, nowIso);
 
-                if (r.schedule_type === 'recurring' && r.time_of_day && r.recurrence) {
-                    const tz = getTimezone();
-                    const baseTime = nextRecurrence(r.time_of_day, r.recurrence, tz);
-                    const withJitter = applyJitter(baseTime, r.fuzzy_minutes);
-                    updateNextFire(r.id, withJitter.toISOString());
-                } else if (!r.nag_enabled) {
-                    confirm(r.id);
+                if (!r.nag_enabled) {
+                    if (r.schedule_type === 'recurring' && r.time_of_day && r.recurrence) {
+                        const tz = getTimezone();
+                        const baseTime = nextRecurrence(r.time_of_day, r.recurrence, tz);
+                        const withJitter = applyJitter(baseTime, r.fuzzy_minutes);
+                        updateNextFire(r.id, withJitter.toISOString());
+                    } else {
+                        confirm(r.id);
+                    }
                 }
             }
 
