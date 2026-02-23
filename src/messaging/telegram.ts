@@ -168,8 +168,9 @@ export class TelegramGateway {
                 await this.send(`Timezone updated to ${newTz}. Recalculated active recurring reminders.`);
                 break;
             }
+            case '/start':
             case '/help': {
-                await this.send('Commands:\n/list\n/done <CODE>\n/cancel <CODE>\n/pause <CODE>\n/resume <CODE>\n/timezone <tz>\n/backup\n\nOr just speak naturally! "Remind me to call John tomorrow at 3pm"');
+                await this.send('Commands:\n/list\n/done <CODE>\n/cancel <CODE>\n/pause <CODE>\n/resume <CODE>\n/timezone <tz>\n/backup\n/autobackup <time>\n\nOr just speak naturally! "Remind me to call John tomorrow at 3pm"');
                 break;
             }
             case '/backup': {
