@@ -64,6 +64,8 @@ If the message is too generic for a meaningful code, use the first significant w
 
 ## Schedule Type Rules
 
+Always default to `schedule_type: once` unless the user explicitly uses words that indicate repetition (e.g., "every", "daily", "always"). Do not infer recurrence purely from the nature of the task (like sleeping or eating).
+
 - **once**: "in 2 hours", "tomorrow at 3pm", "next Tuesday at noon" → compute `fire_at` as target local datetime + local offset
 - **recurring**: "every day at 11:30", "weekdays at 9am", "every Monday" → set `time_of_day` + `recurrence`
 - **random**: "sometime in the next week", "at some point before March", "randomly in the next 2 months" → set `window_start` (now) and `window_end`

@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.5] - 2026-02-22
+
+### Changed
+- Refined the AI Parser system prompt to strictly ban implicit recurrence assumptions. Haiku will no longer assume commands like "go to bed" are daily events unless explicitly provided with repetition keywords like "every" or "daily".
+
 ## [0.1.4] - 2026-02-22
 
 ### Fixed
