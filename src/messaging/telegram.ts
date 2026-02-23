@@ -284,7 +284,8 @@ export class TelegramGateway {
                 nag_interval: parsed.nag_interval_minutes || config.defaults.nag_interval_minutes,
                 nag_count: 0,
                 status: 'active',
-                created_at: new Date().toISOString()
+                created_at: new Date().toISOString(),
+                last_fired_at: null
             };
 
             store.create(rem);
