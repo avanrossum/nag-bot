@@ -54,7 +54,7 @@ export function getNagging(nowIso: string): Reminder[] {
 }
 
 export function getByShortCode(code: string): Reminder | undefined {
-    return db.prepare('SELECT * FROM reminders WHERE short_code = COLLATE NOCASE ?').get(code) as Reminder | undefined;
+    return db.prepare('SELECT * FROM reminders WHERE short_code = ? COLLATE NOCASE').get(code) as Reminder | undefined;
 }
 
 export function listActive(): Reminder[] {
