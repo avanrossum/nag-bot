@@ -4,6 +4,22 @@ A single-user, natural language Telegram bot that schedules fuzzy reminders and 
 
 Powered by the Anthropic SDK (Claude) for natural language parsing, and a robust local SQLite engine for tick-based scheduling. 
 
+## Why this exists
+
+I was undiagnosed with ADHD for over 40 years, and it left me with a *lot* of broken structural habits and coping mechanisms to systematically dismantle or fix.
+
+One thing that never (ever) worked for me was traditional reminders. Take the default reminders app in iOS, for instance. It's incredibly capable, but fundamentally flawed for an ADHD brain: Reminders are too noisy, far too easy to ignore or swipe away, and unnecessarily tedious to clear. When a repeating reminder pops up at the exact same minute every single day, it rapidly morphs from a helpful notification into mere background noise. 
+
+*"Oh, that's just the daily annoyance. Who cares."*
+
+`nag-bot` was designed from the ground up to actively subvert that pattern. 
+
+First, reminders are by default **fuzzy**. They arrive "around" when you set them for. You might be expecting them generally, but you never know *exactly* when to expect them, artificially extending their novelty factor and demanding active attention.
+
+Next, it bridges the intent gap using **Natural Language Processing**. Asking an AI bot to parse your chaotic train of thought usually translates standard gibberish into something properly actionable without fiddling with endless timezone dials and recurrence wheels.
+
+Finally, there are the **Nags**. Some things you just cannot afford to ignore. These reminders will literally fire non-stop on a loop, aggressively pinging your phone every few minutes. They will not stop until you physically look at the bot and explicitly type: *"OK I DID THE THING PLEASE BE QUIET"* (`/done`).
+
 ## Features
 
 - **Natural Language Parsing**: Say "remind me to call John tomorrow at 3pm" and the bot figures out the optimal schedule.
