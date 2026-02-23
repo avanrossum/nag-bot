@@ -16,10 +16,10 @@ const systemPrompt = fs.readFileSync(path.join(ROOT_DIR, 'src/parser/system-prom
 
 export async function parseReminder(message: string, timezone: string): Promise<ParsedReminder> {
     const defaultsStr = JSON.stringify(config.defaults);
-    const nowUtc = new Date().toISOString();
-    const nowLocal = new Date().toLocaleString('en-US', { timeZone: timezone });
+    const rawLocal = new Date().toLocaleString('sv-SE', { timeZone: timezone, timeZoneName: 'longOffset' });
+    const nowLocalIso = rawLocal.replace(' ', 'T').replace(' GMT', '').replace('−', '-');
 
-    const userMessage = `Request: "${message}"\ncurrent_time_utc: ${nowUtc}\ncurrent_time_local: ${nowLocal}\ntimezone: ${timezone}\ndefaults: ${defaultsStr}`;
+    const userMessage = `Request: "${message}"\ncurrent_time: ${nowLocalIso}\ntimezone: ${timezone}\ndefaults: ${defaultsStr}`;
 
     const msg = await client.messages.create({
         model: config.parser.model === 'claude-haiku-3' ? 'claude-3-haiku-20240307' : config.parser.model,

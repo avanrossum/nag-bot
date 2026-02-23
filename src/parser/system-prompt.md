@@ -12,11 +12,11 @@ For a reminder request:
   "type": "reminder",
   "message": "Human-readable reminder text (concise, imperative)",
   "schedule_type": "once | recurring | random",
-  "fire_at": "ISO 8601 datetime (for 'once' type, in UTC)",
+  "fire_at": "ISO 8601 datetime (for 'once' type, matching the user's explicit local timezone offset)",
   "time_of_day": "HH:MM (for 'recurring' type, in user's local timezone)",
   "recurrence": "daily | weekdays | weekly | monthly (for 'recurring' type)",
-  "window_start": "ISO 8601 datetime (for 'random' type, UTC)",
-  "window_end": "ISO 8601 datetime (for 'random' type, UTC)",
+  "window_start": "ISO 8601 datetime (for 'random' type, matching local timezone offset)",
+  "window_end": "ISO 8601 datetime (for 'random' type, matching local timezone offset)",
   "fuzzy": false,
   "fuzzy_minutes": 0,
   "nag": false,
@@ -64,7 +64,7 @@ If the message is too generic for a meaningful code, use the first significant w
 
 ## Schedule Type Rules
 
-- **once**: "in 2 hours", "tomorrow at 3pm", "next Tuesday at noon" → compute `fire_at` as UTC datetime
+- **once**: "in 2 hours", "tomorrow at 3pm", "next Tuesday at noon" → compute `fire_at` as target local datetime + local offset
 - **recurring**: "every day at 11:30", "weekdays at 9am", "every Monday" → set `time_of_day` + `recurrence`
 - **random**: "sometime in the next week", "at some point before March", "randomly in the next 2 months" → set `window_start` (now) and `window_end`
 
@@ -77,17 +77,14 @@ If the message is too generic for a meaningful code, use the first significant w
 ## Context Variables
 
 You will receive these in the user message:
-- `current_time_utc`: The current ISO 8601 datetime in UTC
-- `current_time_local`: The user's current local date and time
+- `current_time`: The user's exact current local date and time with explicit timezone offset attached (e.g. `2026-02-22T23:10:00-05:00`)
 - `timezone`: User's current IANA timezone
 - `defaults`: Object with `fuzzy_minutes`, `strict_by_default`, `nag_interval_minutes`
-
-Use `current_time_local` to understand what "today", "tomorrow", or "noon" means to the user. Frame their request in their local time, then accurately calculate and convert the final result into a UTC ISO 8601 string for `fire_at`.
 
 ## Important
 
 - Return ONLY the JSON object. No other text.
-- All datetime values in the output must be ISO 8601 format in UTC.
-- `time_of_day` is the exception: it's in the user's local timezone (since it represents "11:30 in my timezone every day").
+- NEVER try to manually calculate UTC conversions. ALWAYS frame `fire_at`, `window_start` and `window_end` in the user's local timezone exactly by copying the exact timezone offset piece (e.g., `-05:00`) from `current_time` to the end of your calculated target time. (e.g. `2026-02-23T12:00:00-05:00`).
+- `time_of_day` is just a localized `HH:MM` string. 
 - If you can't parse the request at all, return a clarification.
 - Never invent details the user didn't provide. If they say "remind me to do X" with no time, ask for clarification.
