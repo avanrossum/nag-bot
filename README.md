@@ -97,8 +97,9 @@ Because `nag-bot` runs a polling engine (no webhooks necessary) and relies on SQ
    - `TELEGRAM_BOT_TOKEN`
    - `ANTHROPIC_API_KEY`
    - `DB_PATH=/app/data/nag.db`
-3. Go to the project **Settings** > **Volumes** and add a new volume mounted at `/app/data`. *This is critical—without a volume, your SQLite database will wipe every time you deploy.*
-4. Deploy! The bot will automatically compile the TypeScript, spin up, and resume ticking where it left off.
+3. Add a **Persistent Volume**: Railway recently updated their UI. To do this, press `Cmd + K` (or `Ctrl + K`) and type "Create Volume", or right-click the empty canvas and select "Volume". 
+4. Click on your new Volume, select **Attach Service**, and bind it to your `nag-bot` service. Set the **Mount Path** to `/app/data`. *This is critical—without a volume mounted here, your SQLite database will wipe every time you deploy.*
+5. Deploy! The bot will automatically compile the TypeScript, spin up, and resume ticking where it left off.
 
 ---
 
