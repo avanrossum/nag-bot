@@ -33,6 +33,14 @@ Just text the bot naturally.
 - `/pause <CODE>` / `/resume <CODE>` - Temporarily halt a reminder
 - `/timezone <tz>` - Update your local timezone (e.g., `/timezone America/New_York`)
 - `/backup` - Generate a safe SQLite `.db` snapshot and receive it in chat
+- `/autobackup <HH:MM>` - Schedule a daily automatic backup sent to you (e.g., `/autobackup 22:55`). Use `/autobackup off` to disable it.
+
+### 🔄 Restoring a Backup
+If you ever migrate to a new machine or lose your primary volume:
+1. Download the `.db` file from Telegram.
+2. Rename it to `nag.db`.
+3. Drop it securely into your `data/` folder (or overwrite the existing one at `/app/data/nag.db`), overriding the corrupt/empty file.
+4. Restart the bot (`npm run dev` or redeploy on Railway). It will pick right back up from your last saved state!
 
 ---
 

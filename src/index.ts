@@ -9,7 +9,11 @@ async function bootstrap() {
     const telegram = new TelegramGateway();
 
     const scheduler = new Scheduler(async (msg: string) => {
-        await telegram.send(msg);
+        if (msg.includes('__SYS_BACKUP__')) {
+            await telegram.executeBackup();
+        } else {
+            await telegram.send(msg);
+        }
     });
 
     scheduler.start();

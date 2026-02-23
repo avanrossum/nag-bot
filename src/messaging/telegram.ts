@@ -46,6 +46,22 @@ export class TelegramGateway {
         await this.bot.stopPolling();
     }
 
+    async executeBackup(): Promise<void> {
+        if (!this.chatId) return;
+        try {
+            const dt = new Date().toISOString().replace(/[:.]/g, '-');
+            const backupPath = path.join(os.tmpdir(), `nag-backup-${dt}.db`);
+            await db.backup(backupPath);
+            await this.bot.sendDocument(this.chatId, backupPath, {
+                caption: `📦 NagBot Backup - ${new Date().toLocaleString('en-US', { timeZone: store.getTimezone() })}`
+            });
+            fs.unlinkSync(backupPath);
+        } catch (err: any) {
+            logger.error({ err }, 'Backup failed');
+            await this.send(`❌ Backup failed: ${err.message}`);
+        }
+    }
+
     private async handleMessage(msg: TelegramBot.Message): Promise<void> {
         const text = msg.text?.trim();
         if (!text) return;
@@ -157,20 +173,53 @@ export class TelegramGateway {
                 break;
             }
             case '/backup': {
-                if (!this.chatId) return;
                 await this.send('⏳ Generating safe database backup...');
-                try {
-                    const dt = new Date().toISOString().replace(/[:.]/g, '-');
-                    const backupPath = path.join(os.tmpdir(), `nag-backup-${dt}.db`);
-                    await db.backup(backupPath);
-                    await this.bot.sendDocument(this.chatId, backupPath, {
-                        caption: `📦 NagBot Backup - ${new Date().toLocaleString('en-US', { timeZone: store.getTimezone() })}`
-                    });
-                    fs.unlinkSync(backupPath);
-                } catch (err: any) {
-                    logger.error({ err }, 'Backup failed');
-                    await this.send(`❌ Backup failed: ${err.message}`);
+                await this.executeBackup();
+                break;
+            }
+            case '/autobackup': {
+                const timeOfDay = parts[1]; // e.g., '22:55' or 'off'
+                const existing = store.getByShortCode('SYS_BACKUP');
+
+                if (!timeOfDay) {
+                    return this.send(existing ? `Autobackup is ON. Next fire: ${existing.next_fire_at}` : 'Autobackup is OFF. Usage: /autobackup 22:55 or /autobackup off');
                 }
+
+                if (timeOfDay.toLowerCase() === 'off') {
+                    if (existing) store.cancel(existing.id);
+                    return this.send('Autobackup turned OFF.');
+                }
+
+                // Validate time format roughly (HH:MM or H:MM)
+                if (!/^\d{1,2}:\d{2}$/.test(timeOfDay)) {
+                    return this.send('Invalid time format. Use HH:MM (e.g., 22:55 or 09:00).');
+                }
+
+                // remove existing backup reminder
+                if (existing) {
+                    store.cancel(existing.id);
+                }
+
+                const tz = store.getTimezone();
+                const nextFire = nextRecurrence(timeOfDay, 'daily', tz);
+
+                store.create({
+                    id: nanoid(6),
+                    short_code: 'SYS_BACKUP',
+                    message: '__SYS_BACKUP__',
+                    schedule_type: 'recurring',
+                    next_fire_at: nextFire.toISOString(),
+                    recurrence: 'daily',
+                    time_of_day: timeOfDay,
+                    fuzzy_minutes: 0,
+                    nag_enabled: false,
+                    nag_interval: 0,
+                    nag_count: 0,
+                    status: 'active',
+                    created_at: new Date().toISOString()
+                });
+
+                await this.send(`✅ Autobackup scheduled daily at ${timeOfDay}.`);
                 break;
             }
             default:
