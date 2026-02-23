@@ -8,6 +8,9 @@ async function bootstrap() {
 
     const telegram = new TelegramGateway();
 
+    // Announce startup if the chat is already linked
+    await telegram.send('🚀 nag-bot is up and running.');
+
     const scheduler = new Scheduler(async (msg: string) => {
         if (msg.includes('__SYS_BACKUP__')) {
             await telegram.executeBackup();
