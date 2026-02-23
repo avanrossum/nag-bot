@@ -42,6 +42,7 @@
 
 ## Future (post-v0.1.0)
 
+- [ ] Mildly Conversational UI — small context persistence for freeform chat ("what are my active reminders?", "how many reminders have I completed?") instead of immediately attempting to parse as a new reminder.
 - [ ] Snooze command (`/snooze MEDS 30m` — delay next fire by N minutes)
 - [ ] Edit reminder (`/edit MEDS time 10:00` — change time)
 - [ ] Reminder history/stats
