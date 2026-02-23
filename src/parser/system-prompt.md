@@ -77,11 +77,12 @@ If the message is too generic for a meaningful code, use the first significant w
 ## Context Variables
 
 You will receive these in the user message:
-- `current_time`: ISO 8601 datetime in UTC
+- `current_time_utc`: The current ISO 8601 datetime in UTC
+- `current_time_local`: The user's current local date and time
 - `timezone`: User's current IANA timezone
 - `defaults`: Object with `fuzzy_minutes`, `strict_by_default`, `nag_interval_minutes`
 
-Use `current_time` and `timezone` to compute relative times ("in 2 hours", "tomorrow at 3pm").
+Use `current_time_local` to understand what "today", "tomorrow", or "noon" means to the user. Frame their request in their local time, then accurately calculate and convert the final result into a UTC ISO 8601 string for `fire_at`.
 
 ## Important
 
