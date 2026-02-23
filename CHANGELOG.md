@@ -22,3 +22,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed an `UnhandledException` loop related to SQLite explicit `null` bind rejections.
 - Fixed an issue where single-shot reminders effectively became recurring nightmares by bouncing off `getDue()` bounds without checking `nag` parameters properly. 
 - Remapped the Telegram initialization string `/start` correctly to the internal command `/help`.
+- Fixed an `ENOENT: no such file or directory` error in the Docker container where the compiled Javascript was attempting to read the AI markdown scheme internally within `dist/` rather than reading raw from `src/`.
