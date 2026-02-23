@@ -17,7 +17,9 @@ export class TelegramGateway {
 
     constructor() {
         this.bot = new TelegramBot(env.TELEGRAM_BOT_TOKEN, { polling: true });
-        this.chatId = env.TELEGRAM_CHAT_ID;
+
+        // Load chat ID either from environment variable or from SQLite settings
+        this.chatId = env.TELEGRAM_CHAT_ID || store.getChatId();
 
         this.bot.on('message', this.handleMessage.bind(this));
         this.bot.on('polling_error', (error) => logger.error({ error }, 'Telegram polling error'));
@@ -70,7 +72,7 @@ export class TelegramGateway {
         if (!this.chatId) {
             this.chatId = msgChatId;
             logger.info({ chatId: msgChatId }, 'Auto-discovered chat ID');
-            env.TELEGRAM_CHAT_ID = msgChatId; // update in-memory
+            store.setChatId(msgChatId); // persist to database
             await this.send('Bot locked to this chat ID. Welcome!');
         }
 

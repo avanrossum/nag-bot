@@ -57,6 +57,15 @@ export function getByShortCode(code: string): Reminder | undefined {
     return db.prepare('SELECT * FROM reminders WHERE short_code = ? COLLATE NOCASE').get(code) as Reminder | undefined;
 }
 
+export function getChatId(): string | undefined {
+    const row = db.prepare('SELECT value FROM settings WHERE key = ?').get('chatId') as { value: string } | undefined;
+    return row?.value;
+}
+
+export function setChatId(id: string): void {
+    db.prepare('INSERT OR REPLACE INTO settings (key, value) VALUES (?, ?)').run('chatId', id);
+}
+
 export function listActive(): Reminder[] {
     return db.prepare("SELECT * FROM reminders WHERE status = 'active' ORDER BY next_fire_at ASC").all() as Reminder[];
 }
