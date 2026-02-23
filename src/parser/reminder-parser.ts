@@ -11,7 +11,8 @@ const client = new Anthropic({
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const systemPrompt = fs.readFileSync(path.join(__dirname, 'system-prompt.md'), 'utf-8');
+const ROOT_DIR = path.resolve(__dirname, '../../');
+const systemPrompt = fs.readFileSync(path.join(ROOT_DIR, 'src/parser/system-prompt.md'), 'utf-8');
 
 export async function parseReminder(message: string, timezone: string): Promise<ParsedReminder> {
     const defaultsStr = JSON.stringify(config.defaults);
