@@ -33,10 +33,10 @@
 - [ ] End-to-end testing via Telegram
 
 ### Phase 7: Polish
-- [ ] `README.md` — usage examples, setup instructions, screenshots
-- [ ] Docker build + local test
-- [ ] Railway deployment guide
-- [ ] Verify restart persistence (kill + restart, reminders survive)
+- [x] `README.md` — usage examples, setup instructions, screenshots
+- [x] Docker build + local test
+- [x] Railway deployment guide
+- [x] Verify restart persistence (kill + restart, reminders survive)
 
 ---
 
