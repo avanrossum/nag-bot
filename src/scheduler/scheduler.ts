@@ -1,4 +1,4 @@
-import { getDue, getNagging, markFired, updateNextFire, getTimezone } from '../storage/reminder-store.js';
+import { getDue, getNagging, markFired, updateNextFire, getTimezone, confirm } from '../storage/reminder-store.js';
 import { nextRecurrence, applyJitter } from './fuzzy.js';
 import { logger } from '../util/logger.js';
 import { config } from '../util/config.js';
@@ -49,6 +49,8 @@ export class Scheduler {
                     const baseTime = nextRecurrence(r.time_of_day, r.recurrence, tz);
                     const withJitter = applyJitter(baseTime, r.fuzzy_minutes);
                     updateNextFire(r.id, withJitter.toISOString());
+                } else if (!r.nag_enabled) {
+                    confirm(r.id);
                 }
             }
 

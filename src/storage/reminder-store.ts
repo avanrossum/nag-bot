@@ -33,7 +33,7 @@ export function create(reminder: Reminder): void {
 export function getDue(nowIso: string): Reminder[] {
     return db.prepare(`
     SELECT * FROM reminders 
-    WHERE next_fire_at <= ? AND status = 'active'
+    WHERE next_fire_at <= ? AND status = 'active' AND nag_count = 0
   `).all(nowIso) as Reminder[];
 }
 
