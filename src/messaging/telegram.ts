@@ -172,7 +172,23 @@ export class TelegramGateway {
             }
             case '/start':
             case '/help': {
-                await this.send('Commands:\n/list\n/done <CODE>\n/cancel <CODE>\n/pause <CODE>\n/resume <CODE>\n/timezone <tz>\n/backup\n/autobackup <time>\n\nOr just speak naturally! "Remind me to call John tomorrow at 3pm"');
+                await this.send(`*Commands:*
+/list
+/done <CODE>
+/cancel <CODE>
+/pause <CODE>
+/resume <CODE>
+/timezone <tz>
+/backup
+/autobackup <time>
+
+*Natural Language Modifiers:*
+You can just speak naturally! Use these keywords to change how reminders behave:
+• **Fuzzy / Around**: Adds random jitter (e.g., "Remind me around 3pm")
+• **Exactly / Sharp**: Fires at the exact minute (e.g., "Remind me exactly at 5pm")
+• **Nag / Bug me**: Repeatedly pings you every few minutes until you explicitly /done it
+• **Every**: Sets up a recurring schedule (e.g., "Every weekday at 9am")
+• **Sometime in**: Picks a random time in a window (e.g., "Sometime in the next 3 hours")`);
                 break;
             }
             case '/backup': {
