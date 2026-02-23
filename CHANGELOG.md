@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.1.0] - Unreleased
+## [0.1.0] - 2026-02-22
 
 ### Added
 - **Core Scheduler**: Tick-based event loop natively paired with a local `better-sqlite3` WAL database for high-concurrency reminder polling.
@@ -22,4 +22,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed an `UnhandledException` loop related to SQLite explicit `null` bind rejections.
 - Fixed an issue where single-shot reminders effectively became recurring nightmares by bouncing off `getDue()` bounds without checking `nag` parameters properly. 
 - Remapped the Telegram initialization string `/start` correctly to the internal command `/help`.
+
+## [0.1.1] - 2026-02-22
+
+### Fixed
 - Fixed an `ENOENT: no such file or directory` error in the Docker container where the compiled Javascript was attempting to read the AI markdown scheme internally within `dist/` rather than reading raw from `src/`.
