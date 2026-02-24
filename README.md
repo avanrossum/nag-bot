@@ -119,7 +119,11 @@ scheduler:
 ```
 
 ## Contributing
-Pull requests are welcome! See `ROADMAP.md` for our next open tasks. 
+Pull requests are welcome! See `ROADMAP.md` for our next open tasks.
 
 ## License
 MIT
+
+## About
+
+Built by [Alex van Rossum](https://mipyip.com). Read the story behind it: [Your Reminders Don't Work Because They're Too Predictable](https://mipyip.com/blog/nag-bot).
